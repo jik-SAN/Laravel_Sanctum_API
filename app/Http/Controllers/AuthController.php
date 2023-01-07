@@ -22,6 +22,11 @@ class AuthController extends Controller
         {
             return $this->error('', 401, 'Credentials do not match');
         }
+        $user = User::where('email', $request->email)->first();
+        return $this->success([
+            'user' => $user,
+            'token' => $user->createToken('API Token of '. $user->name)->plainTextToken
+        ]);
 
     }
     public function register(StoreUserRequest $request)
